@@ -4,8 +4,8 @@
 #
 
 # Variables
-MANIFEST_URL="https://github.com/matheusxda/android_kernel_motorola_nice_manifest.git"
-MANIFEST_BRANCH="MMI-W1VNS36H.60-82-6"
+MANIFEST_URL="https://github.com/matheusxda/kernel_motorola_nice_manifest.git"
+MANIFEST_BRANCH="MMI-A171VNH.50-16"
 
 REQUIRED_TOOLS="
 git
@@ -15,14 +15,14 @@ curl
 
 SCRIPT_NAME="$(basename "$0")"
 JOBS=4
-DEPTH=1
 
 BUILD_ONLY=false
 SYNC_ONLY=false
 PRINT_COMMANDS=false
 CLEAN=false
 
-OUT_DIR="$HOME/android_kernel_motorola_nice"
+CLANG=aosp
+OUT_DIR="$HOME/kernel_motorola_nice"
 
 MODULE_DIR="kernel_device_modules-6.1"
 CONFIG_NAME="moto-mgk_64_k61-nice.config"
@@ -46,11 +46,17 @@ check_jobs()
         abort "Invalid number of jobs: $JOBS"
 }
 
+check_clang()
+{
+    case "$CLANG" in
+      aosp|neutron) true ;;
+      *) abort "Unknown clang: $CLANG" ;;
+    esac
+}
+
 help()
 {
     cat << EOF
-Moto G86 Kernel Builder Script
-
 Usage: $SCRIPT_NAME [OPTIONS]
 
 Options:
@@ -62,14 +68,14 @@ Options:
   -b, --branch BRANCH
       Manifest branch.
       Default: $MANIFEST_BRANCH
-
-  --depth=DEPTH
-      Depth for shallow clones.
-      Default: $DEPTH
-
+      
   -o, --out OUT
       Out dir.
-      Default: ~/android_kernel_motorola_nice
+      Default: ~/kernel_motorola_nice
+
+  -C, --clang CLANG
+      Select an clang.
+      Options: aosp (default), neutron
 
   -B, --build-only
       Skip repository synchronization.
@@ -104,14 +110,14 @@ parse_args()
                 MANIFEST_BRANCH="$2"
                 shift 2
                 ;;
-            --depth)
-                [[ $# -ge 2 ]] || abort "Missing value for $1"
-                DEPTH="$2"
-                shift 2
-                ;;
             -o|--out)
                 [[ $# -ge 2 ]] || abort "Missing value for $1"
                 OUT_DIR="$2"
+                shift 2
+                ;;
+            -C|--clang)
+                [[ $# -ge 2 ]] || abort "Missing value for $1"
+                CLANG="$2"
                 shift 2
                 ;;
             -B|--build-only)
@@ -144,6 +150,7 @@ parse_args()
         abort "--build-only and --sync-only cannot be used together."
 
     check_jobs
+    check_clang
 }
 
 # Sync
@@ -151,7 +158,7 @@ sync()
 {
     echo "Initializing manifest..."
 
-    repo init -u "$MANIFEST_URL" -b "$MANIFEST_BRANCH" --depth="$DEPTH"  || abort "repo init failed!"
+    repo init -u "$MANIFEST_URL" -b "$MANIFEST_BRANCH" || abort "repo init failed!"
 
     echo "Synchronizing repositories with $JOBS jobs..."
 
@@ -161,6 +168,24 @@ sync()
 
     ln -sfn "$MODULE_DIR" kernel_device_modules-mainline
     ln -sfn "$MODULE_DIR" kernel_device_modules
+
+    local source_config="$MODULE_DIR/arch/arm64/configs/ext_config/$CONFIG_NAME"
+    local destination_config="$MODULE_DIR/kernel/configs/ext_config/$CONFIG_NAME"
+
+    [ -f "$source_config" ] || abort "Configuration not found: $source_config"
+
+    mkdir -p "$(dirname "$destination_config")"
+    cp -f "$source_config" "$destination_config"
+
+    if [ "$CLANG" = "neutron" ]; then
+       # Delete clang in manifest
+        rm -rf "$OUT_DIR"/prebuilts/clang/host/linux-x86/*
+        cd "$OUT_DIR/prebuilts/clang/host/linux-x86"
+        curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman"
+        chmod +x antman
+        ./antman -S
+        cd "$OUT_DIR"
+    fi
 
    echo "Done!"
 }

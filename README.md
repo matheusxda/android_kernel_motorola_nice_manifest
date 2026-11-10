@@ -1,6 +1,6 @@
 # Motorola Moto G86 5G (nice) — Kernel Manifest
 
-Manifest repository for building the Linux kernel for the **Motorola Moto G86 5G (`nice`)**, based on the Android 16 platform.
+Manifest repository for building the Linux kernel for the **Motorola Moto G86 5G (`nice`)**, based on the Android 17 platform.
 
 ## Manifest Information
 
@@ -8,8 +8,8 @@ Manifest repository for building the Linux kernel for the **Motorola Moto G86 5G
 | --- | --- |
 | Device | Motorola Moto G86 5G |
 | Codename | `nice` |
-| Android Version | 16 |
-| Release Tag | `MMI-W1VNS36H.60-82-6` |
+| Android Version | 17 |
+| Release Tag | `MMI-A171VNH.50-16` |
 
 ## Device Specifications
 
@@ -29,13 +29,13 @@ Manifest repository for building the Linux kernel for the **Motorola Moto G86 5G
 To start building the kernel, run the following command in your terminal:
 
 ```bash
-curl -LSs "https://raw.githubusercontent.com/matheusxda/android_kernel_motorola_nice_manifest/refs/heads/MMI-W1VNS36H.60-82-6/build.sh" | bash
+curl -LSs "https://raw.githubusercontent.com/matheusxda/android_kernel_motorola_nice_manifest/refs/heads/MMI-A171VNH.50-16/build.sh" | bash
 ```
 
 The build script also support using more options:
 
 ```bash
-curl -LO "https://raw.githubusercontent.com/matheusxda/android_kernel_motorola_nice_manifest/refs/heads/MMI-W1VNS36H.60-82-6/build.sh"
+curl -LO "https://raw.githubusercontent.com/matheusxda/android_kernel_motorola_nice_manifest/refs/heads/MMI-A171VNH.50-16/build.sh"
 chmod +x build.sh
 ./build.sh --help
 ```
