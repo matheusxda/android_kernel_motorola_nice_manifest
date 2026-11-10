@@ -1,28 +1,57 @@
-# Motorola Edge 60 Fusion (Scout) kernel manifest
-- Release tag: MMI-V1UI35H.11-39-16
-- Android 15
+# Motorola Moto G86 5G (nice) — Kernel Manifest
 
-## 1. Create folder & sync repo
-<pre>cd ~/
-mkdir -p Scout && cd Scout
-repo init -u https://github.com/Notganesh/motorola_scout_manifest.git -m default.xml
-repo sync -j$(nproc)</pre>
+Manifest repository for building the Linux kernel for the **Motorola Moto G86 5G (`nice`)**, based on the Android 16 platform.
 
-## 2. Create symlinks
-<pre>ln -s kernel_device_modules-6.1 kernel_device_modules-mainline
-ln -s kernel_device_modules-6.1 kernel_device_modules</pre>
+## Manifest Information
 
-## 3. Copy  config
-<pre>mkdir -p kernel_device_modules-6.1/kernel/configs/ext_config
-cp -r kernel_device_modules-6.1/arch/arm64/configs/ext_config/moto-mgk_64_k61-scout.config \
-   kernel_device_modules-6.1/kernel/configs/ext_config/moto-mgk_64_k61-scout.config</pre>
+| Property | Details |
+| --- | --- |
+| Device | Motorola Moto G86 5G |
+| Codename | `nice` |
+| Android Version | 16 |
+| Release Tag | `MMI-W1VNS36H.60-82-6` |
 
-## 4. Build kernel
-<pre>bazel build //kernel-6.1:kernel --//:kernel_version=6.1 --//:internal_config=true</pre>
+## Device Specifications
 
-## 5. Build device modules
-<pre>export DEFCONFIG_OVERLAYS="ext_config/moto-mgk_64_k61-scout.config"
-bazel build //kernel_device_modules-6.1:mgk_64_k61.user</pre>
+| Item | Specifications |
+| --- | --- |
+| Chipset | MediaTek Dimensity 7300 (`mt6878`) |
+| CPU | 4x Cortex-A78 2.5 GHz + 4x Cortex-A55 2.0 GHz |
+| GPU | Arm Mali-G615 MC2 |
+| RAM | 8 / 12 GB |
+| Storage | 256 / 512 GB |
+| Shipped Android Version | 15 |
+| Display | 6.67-inch pOLED, 2712 x 1220 |
+| Battery | 5200 mAh Li-Po (non-removable) |
 
-## 6. Clean sources
-<pre>bazel clean --expunge </pre>
+## Building
+
+To start building the kernel, run the following command in your terminal:
+
+```bash
+curl -LSs "https://raw.githubusercontent.com/matheusxda/android_kernel_motorola_nice_manifest/refs/heads/MMI-W1VNS36H.60-82-6/build.sh" | bash
+```
+
+The build script also support using more options:
+
+```bash
+curl -LO "https://raw.githubusercontent.com/matheusxda/android_kernel_motorola_nice_manifest/refs/heads/MMI-W1VNS36H.60-82-6/build.sh"
+chmod +x build.sh
+./build.sh --help
+```
+
+## Disclaimer
+
+This project is provided for development and educational purposes.
+
+**Use at your own risk.**
+
+Building or flashing a modified Android kernel can result in boot loops, crashes, data loss, device soft-bricks, or other unexpected behavior.
+
+## Credits
+
+Thanks to everyone that contributed to the project:
+
+| Project | Author / Maintainer |
+| --- | --- |
+| [Moto G86 Android 15 Kernel Manifest](https://github.com/dx0101x/motorola_nice_manifest) | [@dx0101x](https://github.com/dx0101x) |
