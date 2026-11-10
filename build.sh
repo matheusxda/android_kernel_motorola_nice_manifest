@@ -4,7 +4,7 @@
 #
 
 # Variables
-MANIFEST_URL="https://github.com/matheusxda/kernel_motorola_nice_manifest.git"
+MANIFEST_URL="https://github.com/matheusxda/android_kernel_motorola_nice_manifest.git"
 MANIFEST_BRANCH="MMI-W1VNS36H.60-82-6"
 
 REQUIRED_TOOLS="
