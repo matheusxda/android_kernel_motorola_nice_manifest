@@ -43,7 +43,7 @@
   </project>
   
   <project path="kernel_device_modules-6.1" name="kernel-kernel_device_modules-6.1" revision="refs/tags/MMI-W1VNS36H.60-82-6" remote="motorola">
-    <linkfile scr="arch/arm64/configs/ext_config/moto-mgk_64_k61-nice.config" dest="kernel_device_modules-6.1/kernel/configs/ext_config/moto-mgk_64_k61-nice.config"
+      <linkfile scr="arch/arm64/configs/ext_config/moto-mgk_64_k61-nice.config" dest="kernel_device_modules-6.1/kernel/configs/ext_config/moto-mgk_64_k61-nice.config" />
   </project>
 
   <!-- MediaTek kernel modules -->
